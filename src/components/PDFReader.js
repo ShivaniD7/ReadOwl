@@ -447,23 +447,24 @@ export default function PDFReader() {
                             </span>
                         </div>
 
-
                         <div
                             className="icon-btn"
                             onClick={() => {
-                                const title = prompt("Bookmark title?");
-                                if (title) {
-                                    const bookmark = { page: currentPage, title };
-                                    const updated = [...bookmarks, bookmark];
-                                    setBookmarks(updated);
-                                    localStorage.setItem(`pdfBookmarks:${filename}`, JSON.stringify(updated));
-                                }
-
+                                const location = renditionRef.current.currentLocation();
+                                if (!location) return;
+                                const title = prompt("Bookmark Title?");
+                                if (!title) return;
+                                const note = prompt("Note (optional):");
+                                const bookmark = { cfi: location.start.cfi, title, note };
+                                const updated = [...bookmarks, bookmark];
+                                setBookmarks(updated);
+                                localStorage.setItem(`bookmarks:${filename}`, JSON.stringify(updated));
                             }}
                         >
                             <FaBookmark />
                             <span>Add Bookmark</span>
                         </div>
+
                         <div
                             className="icon-btn"
                             onClick={() => window.open("https://translate.google.co.in/?sl=auto&tl=en&op=translate", "_blank")}
