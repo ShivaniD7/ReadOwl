@@ -13,7 +13,8 @@ import {
     FaList,
     FaSync,
     FaArrowRight,
-    FaArrowLeft as FaPrev, FaYoutube, FaBook, FaVolumeUp, FaVolumeMute, FaPlay, FaStop
+    FaArrowLeft as FaPrev, FaYoutube, FaBook, FaVolumeUp, FaVolumeMute, FaPlay, FaStop,
+    FaLanguage
 } from "react-icons/fa";
 import "../styles/EPUBReader.css";
 
@@ -614,6 +615,14 @@ export default function EPUBReader() {
                     >
                         <FaYoutube />
                         <span>YouTube</span>
+                    </div>
+
+                    <div
+                        className="icon-btn"
+                        onClick={() => window.open("https://translate.google.co.in/?sl=auto&tl=en&op=translate", "_blank")}
+                    >
+                        <FaLanguage />
+                        <span>Google Translate</span>
                     </div>
 
                     <div

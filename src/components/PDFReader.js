@@ -17,7 +17,8 @@ import {
     FaBook,
     FaYoutube,
     FaCog,
-    FaList
+    FaList,
+    FaLanguage
 } from "react-icons/fa";
 import "../styles/PDFReader.css";
 
@@ -429,7 +430,13 @@ export default function PDFReader() {
                             <FaBookmark />
                             <span>Add Bookmark</span>
                         </div>
-
+                        <div
+                            className="icon-btn"
+                            onClick={() => window.open("https://translate.google.co.in/?sl=auto&tl=en&op=translate", "_blank")}
+                        >
+                            <FaLanguage />
+                            <span>Google Translate</span>
+                        </div>
 
                         <div className="icon-btn" onClick={() => {
                             if (currentPage > 1) {
