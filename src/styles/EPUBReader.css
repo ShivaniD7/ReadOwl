@@ -276,3 +276,70 @@ html {
     cursor: pointer;
     transition: all 0.3s ease;
 }
+
+.bookmark-manager {
+    position: absolute;
+    top: 80px;
+    left: 90px;
+    background: #ffffff;
+    color: #1f2937;
+    border: 2px solid var(--border-color, #ccc);
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    padding: 16px;
+    width: 250px;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 999;
+    font-family: "Segoe UI", sans-serif;
+}
+
+.bookmark-manager h4 {
+    margin-top: 0;
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+    color: var(--accent-color, #c74d7d);
+    text-align: center;
+}
+
+.bookmark-manager ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.bookmark-manager li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+}
+
+.bookmark-manager li button {
+    padding: 4px 8px;
+    margin-left: 8px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: background 0.2s ease;
+}
+
+.bookmark-manager li button:first-child {
+    background-color: var(--secondary-color, #967322);
+    color: #fff;
+}
+
+.bookmark-manager li button:first-child:hover {
+    background-color: var(--secondary-hover, #c9983f);
+}
+
+.bookmark-manager li button:last-child {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.bookmark-manager li button:last-child:hover {
+    background-color: #c0392b;
+}

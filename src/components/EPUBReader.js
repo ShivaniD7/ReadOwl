@@ -51,6 +51,30 @@ export default function EPUBReader() {
     const recognitionRef = useRef(null);
     const [showTTSSettings, setShowTTSSettings] = useState(false);
     const [fontFamily, setFontFamily] = useState("default");
+    const dragOffsetBookmark = useRef({ x: 0, y: 0 });
+    const [bookmarkPosition, setBookmarkPosition] = useState({ x: 90, y: 80 });
+    const startDragBookmark = (e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        dragOffsetBookmark.current = {
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top,
+        };
+        window.addEventListener("mousemove", onDragBookmark);
+        window.addEventListener("mouseup", stopDragBookmark);
+    };
+
+    const onDragBookmark = (e) => {
+        const newPos = {
+            x: e.clientX - dragOffsetBookmark.current.x,
+            y: e.clientY - dragOffsetBookmark.current.y,
+        };
+        setBookmarkPosition(newPos);
+    };
+
+    const stopDragBookmark = () => {
+        window.removeEventListener("mousemove", onDragBookmark);
+        window.removeEventListener("mouseup", stopDragBookmark);
+    };
 
 
 
@@ -775,6 +799,56 @@ export default function EPUBReader() {
                     </label>
                 </div>
             )}
+            {bookmarks.length > 0 && (
+                <div
+                    className="bookmark-manager"
+                    onMouseDown={startDragBookmark}
+                    style={{
+                        position: "absolute",
+                        top: `${bookmarkPosition.y}px`,
+                        left: `${bookmarkPosition.x}px`,
+                        // the rest of your styles
+                        background: "#ffffff",
+                        color: "#1f2937",
+                        border: "2px solid var(--border-color, #ccc)",
+                        borderRadius: "12px",
+                        boxShadow: "0 8px 20px rgba(0, 0, 0, 0.15)",
+                        padding: "16px",
+                        width: "250px",
+                        maxHeight: "300px",
+                        overflowY: "auto",
+                        zIndex: 999,
+                        fontFamily: '"Segoe UI", sans-serif',
+                        cursor: "move", // 👈 optional visual cue
+                    }}
+                >
+
+                    <h4>📑 Bookmarks</h4>
+                    <ul>
+                        {bookmarks.map((bm, i) => (
+                            <li key={i}>
+                                <button
+                                    onClick={() => {
+                                        renditionRef.current.display(bm.cfi);
+                                    }}
+                                >
+                                    {bm.title}
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        const updated = bookmarks.filter((_, idx) => idx !== i);
+                                        setBookmarks(updated);
+                                        localStorage.setItem(`bookmarks:${filename}`, JSON.stringify(updated));
+                                    }}
+                                >
+                                    ❌
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+
 
         </div>
     );

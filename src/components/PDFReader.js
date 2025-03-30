@@ -47,6 +47,9 @@ export default function PDFReader() {
     const [autoRead, setAutoRead] = useState(false); // Auto-read state
     const [showTTSSettings, setShowTTSSettings] = useState(false); // TTS settings dialog visibility
     const pageFlipSound = useRef(new Audio("/sounds/page-flip.mp3"));
+    const [bookmarks, setBookmarks] = useState(() => {
+        return JSON.parse(localStorage.getItem(`pdfBookmarks:${filename}`) || '[]');
+    });
 
     const fullFilename = filename.endsWith(".pdf") ? filename : `${filename}.pdf`;
     const fileUrl = `http://localhost:5000/books/${fullFilename}`;
@@ -55,7 +58,32 @@ export default function PDFReader() {
     const [highlights, setHighlights] = useState(() => {
         return JSON.parse(localStorage.getItem(`highlights:${filename}`) || '{}');
     });
+    const dragOffsetBookmark = useRef({ x: 0, y: 0 });
+    const [bookmarkPosition, setBookmarkPosition] = useState({ x: 90, y: 80 });
+
     const dictRef = useRef(null);
+    const startDragBookmark = (e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        dragOffsetBookmark.current = {
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top,
+        };
+        window.addEventListener("mousemove", onDragBookmark);
+        window.addEventListener("mouseup", stopDragBookmark);
+    };
+
+    const onDragBookmark = (e) => {
+        const newPos = {
+            x: e.clientX - dragOffsetBookmark.current.x,
+            y: e.clientY - dragOffsetBookmark.current.y,
+        };
+        setBookmarkPosition(newPos);
+    };
+
+    const stopDragBookmark = () => {
+        window.removeEventListener("mousemove", onDragBookmark);
+        window.removeEventListener("mouseup", stopDragBookmark);
+    };
 
     const getThemeStyles = (theme) => {
         switch (theme) {
@@ -424,7 +452,13 @@ export default function PDFReader() {
                             className="icon-btn"
                             onClick={() => {
                                 const title = prompt("Bookmark title?");
-                                if (title) alert(`Bookmark '${title}' saved.`);
+                                if (title) {
+                                    const bookmark = { page: currentPage, title };
+                                    const updated = [...bookmarks, bookmark];
+                                    setBookmarks(updated);
+                                    localStorage.setItem(`pdfBookmarks:${filename}`, JSON.stringify(updated));
+                                }
+
                             }}
                         >
                             <FaBookmark />
@@ -673,6 +707,49 @@ export default function PDFReader() {
                         )}
 
                         <div onMouseDown={startResize} className="dictionary-resize-handle" />
+                    </div>
+                )}
+                {bookmarks.length > 0 && (
+                    <div
+                        className="bookmark-manager"
+                        onMouseDown={startDragBookmark}
+                        style={{
+                            position: "absolute",
+                            top: `${bookmarkPosition.y}px`,
+                            left: `${bookmarkPosition.x}px`,
+                            // the rest of your styles
+                            background: "#ffffff",
+                            color: "#1f2937",
+                            border: "2px solid var(--border-color, #ccc)",
+                            borderRadius: "12px",
+                            boxShadow: "0 8px 20px rgba(0, 0, 0, 0.15)",
+                            padding: "16px",
+                            width: "250px",
+                            maxHeight: "300px",
+                            overflowY: "auto",
+                            zIndex: 999,
+                            fontFamily: '"Segoe UI", sans-serif',
+                            cursor: "move", // 👈 optional visual cue
+                        }}
+                    >
+
+                        <h4>📑 Bookmarks</h4>
+                        <ul>
+                            {bookmarks.map((bm, i) => (
+                                <li key={i}>
+                                    <button onClick={() => setCurrentPage(bm.page)}>{bm.title}</button>
+                                    <button
+                                        onClick={() => {
+                                            const updated = bookmarks.filter((_, idx) => idx !== i);
+                                            setBookmarks(updated);
+                                            localStorage.setItem(`pdfBookmarks:${filename}`, JSON.stringify(updated));
+                                        }}
+                                    >
+                                        ❌
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 )}
 
