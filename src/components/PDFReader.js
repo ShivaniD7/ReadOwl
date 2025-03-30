@@ -450,20 +450,23 @@ export default function PDFReader() {
                         <div
                             className="icon-btn"
                             onClick={() => {
-                                const location = renditionRef.current.currentLocation();
-                                if (!location) return;
                                 const title = prompt("Bookmark Title?");
                                 if (!title) return;
                                 const note = prompt("Note (optional):");
-                                const bookmark = { cfi: location.start.cfi, title, note };
+                                const bookmark = {
+                                    page: currentPage,
+                                    title,
+                                    note,
+                                };
                                 const updated = [...bookmarks, bookmark];
                                 setBookmarks(updated);
-                                localStorage.setItem(`bookmarks:${filename}`, JSON.stringify(updated));
+                                localStorage.setItem(`pdfBookmarks:${filename}`, JSON.stringify(updated));
                             }}
                         >
                             <FaBookmark />
                             <span>Add Bookmark</span>
                         </div>
+
 
                         <div
                             className="icon-btn"
@@ -724,9 +727,9 @@ export default function PDFReader() {
                             border: "2px solid var(--border-color, #ccc)",
                             borderRadius: "12px",
                             boxShadow: "0 8px 20px rgba(0, 0, 0, 0.15)",
-                            padding: "16px",
-                            width: "250px",
-                            maxHeight: "300px",
+                            padding: "20px",
+                            width: "300px",
+                            Height: "400px",
                             overflowY: "auto",
                             zIndex: 999,
                             fontFamily: '"Segoe UI", sans-serif',
@@ -735,24 +738,50 @@ export default function PDFReader() {
                     >
 
                         <h4>📑 Bookmarks</h4>
-                        <ul>
+                        <ul style={{ fontSize: "2rem", padding: 0, listStyle: "none" }}>
                             {bookmarks.map((bm, i) => (
-                                <li key={i}>
-                                    <button onClick={() => setCurrentPage(bm.page)}>{bm.title}</button>
+                                <li key={i} style={{ marginBottom: "12px" }}>
                                     <button
+                                        onClick={() => setCurrentPage(bm.page)}
+                                        style={{ display: "block", fontWeight: "bold", fontSize: "1.5rem", marginBottom: "4px" }}
+                                    >
+                                        {bm.title}
+                                    </button>
+                                    {
+                                        bm.note && (
+                                            <div
+                                                style={{
+                                                    fontSize: "1.6rem",        // ⬅️ increased size
+                                                    color: "#222",
+                                                    background: "#f9f9f9",
+                                                    padding: "8px 10px",
+                                                    borderRadius: "6px",
+                                                    marginTop: "6px",
+                                                    border: "1px solid #ddd",
+                                                }}
+                                            >
+                                                📝 {bm.note}
+                                            </div>
+                                        )
+                                    }
+
+                                    < button
                                         onClick={() => {
                                             const updated = bookmarks.filter((_, idx) => idx !== i);
                                             setBookmarks(updated);
                                             localStorage.setItem(`pdfBookmarks:${filename}`, JSON.stringify(updated));
                                         }}
+                                        style={{ color: "red" }}
                                     >
-                                        ❌
+                                        ❌ Remove
                                     </button>
                                 </li>
                             ))}
                         </ul>
-                    </div>
-                )}
+
+                    </div >
+                )
+                }
 
             </div >
         </>

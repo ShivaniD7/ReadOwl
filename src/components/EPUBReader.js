@@ -813,9 +813,10 @@ export default function EPUBReader() {
                         border: "2px solid var(--border-color, #ccc)",
                         borderRadius: "12px",
                         boxShadow: "0 8px 20px rgba(0, 0, 0, 0.15)",
-                        padding: "16px",
-                        width: "250px",
-                        maxHeight: "300px",
+                        padding: "20px",
+                        fontSize: "1.3rem",
+                        width: "300px",
+                        Height: "400px",
                         overflowY: "auto",
                         zIndex: 999,
                         fontFamily: '"Segoe UI", sans-serif',
@@ -824,28 +825,45 @@ export default function EPUBReader() {
                 >
 
                     <h4>📑 Bookmarks</h4>
-                    <ul>
+                    <ul style={{ fontSize: "1.1rem", padding: 0, listStyle: "none" }}>
                         {bookmarks.map((bm, i) => (
-                            <li key={i}>
+                            <li key={i} style={{ marginBottom: "12px" }}>
                                 <button
-                                    onClick={() => {
-                                        renditionRef.current.display(bm.cfi);
-                                    }}
+                                    onClick={() => renditionRef.current.display(bm.cfi)}
+                                    style={{ fontWeight: "bold", display: "block", fontSize: "1.5rem", marginBottom: "4px" }}
                                 >
                                     {bm.title}
                                 </button>
+                                {bm.note && (
+                                    <div
+                                        style={{
+                                            fontSize: "1.6rem",        // ⬅️ increased size
+                                            color: "#222",
+                                            background: "#f9f9f9",
+                                            padding: "8px 10px",
+                                            borderRadius: "6px",
+                                            marginTop: "6px",
+                                            border: "1px solid #ddd",
+                                        }}
+                                    >
+                                        📝 {bm.note}
+                                    </div>
+                                )}
+
                                 <button
                                     onClick={() => {
                                         const updated = bookmarks.filter((_, idx) => idx !== i);
                                         setBookmarks(updated);
                                         localStorage.setItem(`bookmarks:${filename}`, JSON.stringify(updated));
                                     }}
+                                    style={{ color: "red" }}
                                 >
-                                    ❌
+                                    ❌ Remove
                                 </button>
                             </li>
                         ))}
                     </ul>
+
                 </div>
             )}
 
