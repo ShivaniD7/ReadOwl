@@ -19,7 +19,20 @@ export default function App() {
     console.error(err);
   };
 
-  window.addEventListener("error", ignoreResizeObserverError);
+  // Add this in your App.js or index.js (top level)
+  window.addEventListener("error", (e) => {
+    if (
+      e.message === "ResizeObserver loop completed with undelivered notifications." ||
+      e.message === "ResizeObserver loop limit exceeded"
+    ) {
+      const errorOverlay = document.getElementById("webpack-dev-server-client-overlay");
+      if (errorOverlay) {
+        errorOverlay.style.display = "none"; // Hide red error box
+      }
+      e.stopImmediatePropagation(); // Prevent from bubbling to React
+    }
+  });
+
 
   // Apply theme to <html>
   useEffect(() => {

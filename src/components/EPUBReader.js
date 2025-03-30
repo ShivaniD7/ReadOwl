@@ -76,8 +76,6 @@ export default function EPUBReader() {
         window.removeEventListener("mouseup", stopDragBookmark);
     };
 
-
-
     const startListening = () => {
         if (!("webkitSpeechRecognition" in window || "SpeechRecognition" in window)) {
             alert("Speech recognition not supported in this browser.");

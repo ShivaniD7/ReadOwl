@@ -60,7 +60,6 @@ export default function PDFReader() {
     });
     const dragOffsetBookmark = useRef({ x: 0, y: 0 });
     const [bookmarkPosition, setBookmarkPosition] = useState({ x: 90, y: 80 });
-
     const dictRef = useRef(null);
     const startDragBookmark = (e) => {
         const rect = e.currentTarget.getBoundingClientRect();

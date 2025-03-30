@@ -523,7 +523,6 @@ body {
   max-width: 900px;
 }
 
-
 @media (max-width: 480px) {
   .hero {
     height: 22vh;
