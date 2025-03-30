@@ -1,0 +1,574 @@
+:root {
+  --bg-color: #f8f9fa;
+  --text-color: #212529;
+  --accent-color: #d63384;
+  --accent-hover: #e83e8c;
+  --secondary-color: #4f46e5;
+  --secondary-hover: #6366f1;
+  --highlight-color: #0dcaf0;
+  --card-bg: #ffffff;
+  --border-color: #dee2e6;
+  --text-muted: #6c757d;
+  --glow: 0 0 12px rgba(214, 51, 132, 0.4);
+}
+
+[data-theme="dark"] {
+  --bg-color: #121212;
+  --text-color: #f1f1f1;
+  --accent-color: #bb86fc;
+  --accent-hover: #dba6ff;
+  --secondary-color: #03dac6;
+  --secondary-hover: #70efde;
+  --highlight-color: #03a9f4;
+  --card-bg: #1e1e1e;
+  --border-color: #333;
+  --text-muted: #aaa;
+  --glow: 0 0 12px rgba(187, 134, 252, 0.5);
+}
+
+[data-theme="aurora"] {
+  --bg-color: #0f172a;
+  --text-color: #e0f2fe;
+  --accent-color: #f472b6;
+  --accent-hover: #fb7185;
+  --secondary-color: #38bdf8;
+  --secondary-hover: #60a5fa;
+  --highlight-color: #22d3ee;
+  --card-bg: #1e293b;
+  --border-color: #334155;
+  --text-muted: #94a3b8;
+  --glow: 0 0 14px rgba(56, 189, 248, 0.5);
+}
+
+/* 🌸 Pastel Theme - Richer, More Contrast */
+[data-theme="pastel"] {
+  --bg-color: #4a9bc0;
+  --text-color: #1e1b24;
+  --accent-color: #c74d7d;
+  --accent-hover: #cc6b4e;
+  --secondary-color: #967322;
+  --secondary-hover: #c9983f;
+  --highlight-color: #b0c94e;
+  --card-bg: #a7d1e0;
+  --border-color: #719fb8;
+  --text-muted: #314350;
+  --glow: 0 0 18px rgba(199, 77, 125, 0.55);
+}
+
+
+
+
+/* 🌿 Nature Theme - Deeper Greens, More Forest Feel */
+[data-theme="nature"] {
+  --bg-color: #4a6e4d;
+  /* Slightly dark forest green for the background */
+  --text-color: #f0f0f0;
+  /* Light gray for text for good contrast */
+  --accent-color: #72ad72;
+  /* Darker forest green for accents */
+  --accent-hover: #1f3b1f;
+  /* Even darker green for hover effect */
+  --secondary-color: #94bc43;
+  /* Olive green for secondary elements */
+  --secondary-hover: #4f6b1f;
+  /* Darker olive green for hover effect */
+  --highlight-color: #a8d5ba;
+  /* Soft highlight green for highlights */
+  --card-bg: #3b5b3b;
+  /* Darker green for card backgrounds */
+  --border-color: #2c3e2c;
+  /* Dark green for borders */
+  --text-muted: #b0c4b0;
+  /* Muted light green for less prominent text */
+  --glow: 0 0 16px rgba(34, 139, 34, 0.55);
+  /* Green glow effect */
+}
+
+
+/* 📜 Vintage Theme - More Rich Sepia & Antique Tones */
+[data-theme="vintage"] {
+  --bg-color: #8b6a4e;
+  /* Slightly darker brown for the background */
+  --text-color: #785c2c;
+  /* Light cream for text for good contrast */
+  --accent-color: #4B3D3D;
+  /* Coffee brown for accents */
+  --accent-hover: #3B2A2A;
+  /* Darker coffee brown for hover effect */
+  --secondary-color: #A67C5D;
+  /* Light brown for secondary elements */
+  --secondary-hover: #8B5B3A;
+  /* Darker light brown for hover effect */
+  --highlight-color: #C2B280;
+  /* Muted beige for highlights */
+  --card-bg: #d7c6a8;
+  /* Softer light beige for card backgrounds */
+  --border-color: #BFAF8A;
+  /* Light brown for borders */
+  --text-muted: #7B5B3A;
+  /* Muted brown for less prominent text */
+  --glow: 0 0 12px rgba(75, 61, 61, 0.4);
+  /* Brown glow effect */
+}
+
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: 'Segoe UI', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.library-container {
+  padding: 2rem 1.5rem;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.library-title {
+  font-size: 2.75rem;
+  font-weight: 800;
+  color: var(--accent-color);
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Buttons */
+.button-row {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.theme-toggle {
+  padding: 0.8rem 2rem;
+  font-size: 1rem;
+  background-color: var(--secondary-color);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(79, 70, 229, 0.3);
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.theme-toggle:hover {
+  background-color: var(--secondary-hover);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(79, 70, 229, 0.4);
+}
+
+.theme-selector {
+  padding: 0.7rem 1.2rem;
+  border-radius: 8px;
+  border: 2px solid var(--border-color);
+  font-weight: bold;
+  font-size: 1rem;
+  background: var(--card-bg);
+  color: var(--text-color);
+  box-shadow: 0 0 8px var(--glow);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+
+/* Search bar */
+.search-input {
+  width: 100%;
+  padding: 1rem 1.2rem;
+  font-size: 1.15rem;
+  margin: 2rem 0;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-input:focus {
+  border-color: var(--highlight-color);
+  outline: none;
+  box-shadow: 0 0 12px rgba(13, 202, 240, 0.5);
+}
+
+/* Latest Releases Section */
+.latest-releases {
+  padding: 2.5rem;
+  background-color: var(--card-bg);
+  border-radius: 14px;
+  box-shadow: 0 4px 12px var(--glow);
+  margin: 1rem auto;
+  width: 95%;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  color: var(--accent-color);
+  margin-bottom: 1.5rem;
+}
+
+.latest-grid {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+}
+
+.latest-card {
+  min-width: 160px;
+  cursor: pointer;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.latest-card:hover {
+  transform: translateY(-6px);
+}
+
+.latest-card img {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.latest-card h4 {
+  margin-top: 0.8rem;
+  font-size: 1rem;
+  color: var(--secondary-color);
+}
+
+/* Main Container Adjustments */
+.main-container {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  /* Sidebar wider */
+  gap: 30px;
+  padding: 1rem 2rem;
+}
+
+/* Sidebar Enhancements */
+.sidebar {
+  background-color: var(--card-bg);
+  padding: 1.8rem;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px var(--glow);
+  height: fit-content;
+  width: 285px;
+}
+
+.sidebar-title {
+  font-size: 1.6rem;
+  color: var(--accent-color);
+  margin-bottom: 1.5rem;
+}
+
+.sidebar-book {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  width: 300px;
+}
+
+.sidebar-book:hover {
+  transform: translateY(-4px);
+}
+
+.sidebar-book img {
+  border-radius: 10px;
+  width: 80px;
+  height: 120px;
+  object-fit: cover;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-info h4 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--secondary-color);
+}
+
+.sidebar-info p {
+  font-size: 0.85rem;
+  opacity: 0.75;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .main-container {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    margin-top: 2rem;
+  }
+
+  .latest-card {
+    min-width: 140px;
+  }
+
+  .sidebar-book img {
+    width: 60px;
+    height: 90px;
+  }
+}
+
+/* Grid layout */
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.8rem;
+  padding-bottom: 2rem;
+}
+
+/* Book card */
+.book-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.2rem;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+.book-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--accent-color);
+  box-shadow: 0 8px 24px var(--glow);
+}
+
+.book-cover {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.book-card:hover .book-cover {
+  transform: scale(1.04);
+}
+
+/* Book info */
+.book-info {
+  width: 100%;
+}
+
+.book-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0.4rem 0;
+  color: var(--secondary-color);
+}
+
+.book-type {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 0.4rem;
+}
+
+.book-description {
+  font-size: 0.95rem;
+  color: var(--text-color);
+  line-height: 1.4;
+  height: 2.7rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* === HERO SECTION === */
+.hero {
+  position: relative;
+  height: 60vh;
+  /* Adjust height (20vh - 35vh) as needed */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: background-image 1s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6));
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  box-sizing: border-box;
+}
+
+/* Top nav inside hero */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  z-index: 10;
+}
+
+.logo {
+  color: #fff;
+  font-size: 3rem;
+  font-weight: 800;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.nav-links {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.nav-link {
+  color: var(--highlight-color);
+  /* assuming you use CSS variables for theming */
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.5em;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: var(--accent-color);
+  /* or any hover color you like */
+}
+
+/* Search bar inside hero */
+.hero-search {
+  flex: 1;
+  width: 400px;
+  padding: 0.7rem 1rem;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  outline: none;
+}
+
+.search-bar-container {
+  display: flex;
+  align-items: center;
+}
+
+.search-button {
+  padding: 0.5em 1em;
+  margin-left: 0.5em;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  margin: 1.5em 0;
+  align-items: center;
+  font-size: 1em;
+}
+
+.filters label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  font-size: 1.5em;
+}
+
+.filters select {
+  margin-top: 0.3em;
+  padding: 0.8em 0.8em;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.95em;
+  width: 20em;
+}
+
+
+.nav-actions {
+  display: flex;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+}
+
+/* Quote below nav */
+.hero-quote {
+  text-align: center;
+  color: #f9fafb;
+  font-size: 1.25rem;
+  font-style: italic;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+  margin: 2rem auto;
+  max-width: 900px;
+}
+
+
+@media (max-width: 480px) {
+  .hero {
+    height: 22vh;
+  }
+
+  .logo {
+    font-size: 1.5rem;
+  }
+
+  .hero-quote {
+    font-size: 1rem;
+  }
+
+  .nav-actions {
+    justify-content: center;
+  }
+}
+
+.latest-description {
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  color: var(--text-muted);
+  line-height: 1.3;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+}
+
+.sidebar-description {
+  font-size: 0.8rem;
+  margin-top: 0.4rem;
+  color: var(--text-muted);
+  line-height: 1.2;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+}
+
+.sidebar-type {
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: var(--accent-color);
+  margin-top: 0.2rem;
+}
