@@ -737,7 +737,7 @@ export default function PDFReader() {
                         }}
                     >
 
-                        <h4>📑 Bookmarks</h4>
+                        <h2>📑 Bookmarks</h2>
                         <ul style={{ fontSize: "2rem", padding: 0, listStyle: "none" }}>
                             {bookmarks.map((bm, i) => (
                                 <li key={i} style={{ marginBottom: "12px" }}>
