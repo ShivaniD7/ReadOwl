@@ -252,27 +252,64 @@ export default function PDFReader() {
 
     // Draggable dialog functionality
     const dragOffset = useRef({ x: 0, y: 0 });
+
+    const [dictPosition, setDictPosition] = useState(() => {
+        const saved = localStorage.getItem("dictPosition");
+        return saved ? JSON.parse(saved) : { x: 100, y: 100 };
+    });
+    const [dictSize, setDictSize] = useState({ width: 400, height: 250 });
+    const [isMinimized, setIsMinimized] = useState(false);
+    const resizing = useRef(false);
+
+    // Drag logic
     const startDrag = (e) => {
+        if (!dictRef.current) return; // ✅ Prevent crash
+
+        const rect = dictRef.current.getBoundingClientRect();
         dragOffset.current = {
-            x: e.clientX,
-            y: e.clientY,
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top,
         };
         window.addEventListener("mousemove", onDrag);
         window.addEventListener("mouseup", stopDrag);
     };
 
+
     const onDrag = (e) => {
-        const dialog = document.getElementById("tts-settings-dialog");
-        if (dialog) {
-            const newX = e.clientX - dragOffset.current.x;
-            const newY = e.clientY - dragOffset.current.y;
-            dialog.style.transform = `translate(${newX}px, ${newY}px)`;
-        }
+        const newPos = {
+            x: e.clientX - dragOffset.current.x,
+            y: e.clientY - dragOffset.current.y,
+        };
+        setDictPosition(newPos);
+        localStorage.setItem("dictPosition", JSON.stringify(newPos));
     };
 
     const stopDrag = () => {
         window.removeEventListener("mousemove", onDrag);
         window.removeEventListener("mouseup", stopDrag);
+    };
+
+    // Resize logic
+    const startResize = (e) => {
+        resizing.current = { startX: e.clientX, startY: e.clientY, ...dictSize };
+        window.addEventListener("mousemove", onResize);
+        window.addEventListener("mouseup", stopResize);
+    };
+
+    const onResize = (e) => {
+        if (!resizing.current) return;
+        const deltaX = e.clientX - resizing.current.startX;
+        const deltaY = e.clientY - resizing.current.startY;
+        setDictSize({
+            width: Math.max(200, resizing.current.width + deltaX),
+            height: Math.max(150, resizing.current.height + deltaY),
+        });
+    };
+
+    const stopResize = () => {
+        resizing.current = false;
+        window.removeEventListener("mousemove", onResize);
+        window.removeEventListener("mouseup", stopResize);
     };
 
     return (
@@ -564,48 +601,73 @@ export default function PDFReader() {
                         </div>
                     )
                 }
-                {
-                    showDictionary && (
-                        <div
-                            ref={dictRef}
-                            className="dictionary-panel"
-                            style={{
-                                position: "absolute",
-                                top: 100,
-                                left: 100,
-                                backgroundColor: "#fff",
-                                padding: 10,
-                                border: "1px solid #ccc",
-                                borderRadius: 8,
-                                zIndex: 999,
-                            }}
-                        >
-                            <input
-                                type="text"
-                                placeholder="Type a word..."
-                                className="dictionary-input"
-                                onKeyDown={async (e) => {
-                                    if (e.key === "Enter") {
-                                        const word = e.target.value.trim();
-                                        if (!word) return alert("Please enter a word.");
-                                        try {
-                                            const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
-                                            const data = await res.json();
-                                            const def = data?.[0]?.meanings?.[0]?.definitions?.[0]?.definition;
-                                            if (!def) throw new Error();
-                                            alert(`Definition of ${word}:\n${def}`);
-                                        } catch {
-                                            alert("No definition found.");
-                                        }
-                                    }
-                                }}
-                            />
-                            <button onClick={startListening}>
-                                {isListening ? "🎙️ Listening..." : "🎤 Speak Word"}
-                            </button>
+                {showDictionary && (
+                    <div
+                        ref={dictRef}
+                        className="dictionary-panel"
+                        style={{
+                            left: `${dictPosition.x}px`,
+                            top: `${dictPosition.y}px`,
+                            width: `${dictSize.width}px`,
+                            height: `${dictSize.height}px`,
+                        }}
+                    >
+                        <div onMouseDown={startDrag} className="dictionary-header">
+                            <span>📘 Dictionary</span>
+                            <div>
+                                <button onClick={() => setIsMinimized(!isMinimized)}>
+                                    {isMinimized ? "🔼" : "🔽"}
+                                </button>
+                                <button onClick={() => setShowDictionary(false)}>✖</button>
+                            </div>
                         </div>
-                    )
-                }
+
+                        {!isMinimized && (
+                            <div className="dictionary-body">
+                                <input
+                                    type="text"
+                                    placeholder="Type a word..."
+                                    className="dictionary-input"
+                                    onKeyDown={async (e) => {
+                                        if (e.key === "Enter") {
+                                            const word = e.target.value.trim();
+                                            if (!word) return alert("Please enter a word.");
+                                            try {
+                                                const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+                                                const data = await res.json();
+                                                const definition = data?.[0]?.meanings?.[0]?.definitions?.[0]?.definition;
+                                                if (!definition) throw new Error();
+                                                alert(`Definition of "${word}":\n${definition}`);
+                                            } catch {
+                                                alert("Sorry, no definition found.");
+                                            }
+                                        }
+                                    }}
+                                />
+                                <button
+                                    onClick={startListening}
+                                    style={{
+                                        padding: "8px 12px",
+                                        borderRadius: "6px",
+                                        border: "1px solid #3498db",
+                                        backgroundColor: isListening ? "#2980b9" : "#3498db",
+                                        color: "white",
+                                        cursor: "pointer",
+                                        marginTop: "8px",
+                                        fontSize: "0.95rem",
+                                        transition: "background 0.2s ease",
+                                    }}
+                                >
+                                    {isListening ? "🎙️ Listening..." : "🎤 Speak Word"}
+                                </button>
+
+                                <p className="dictionary-tip">Press Enter to look up</p>
+                            </div>
+                        )}
+
+                        <div onMouseDown={startResize} className="dictionary-resize-handle" />
+                    </div>
+                )}
 
             </div >
         </>
