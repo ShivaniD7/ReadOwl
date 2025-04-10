@@ -527,12 +527,50 @@ export default function PDFReader() {
 
                     <div ref={viewerRef} className="pdf-viewer" style={{ flex: 1, overflowY: "auto", overflowX: "hidden" }}>
                         <Document file={fileUrl} onLoadSuccess={onLoadSuccess}>
+                            {Object.keys(highlights).length > 0 && isScrollMode && (
+                                <div className="highlight-panel">
+                                    <h3>🟨 Your Highlights</h3>
+                                    {Object.entries(highlights).map(([page, items]) => (
+                                        <div key={page}>
+                                            <h4>📄 Page {Number(page) + 1}</h4>
+                                            <ul>
+                                                {items.map((h, i) => (
+                                                    <li key={i}>
+                                                        <span style={{ marginRight: "8px" }}>{h.text}</span>
+                                                        <button
+                                                            onClick={() => {
+                                                                const updated = { ...highlights };
+                                                                updated[page].splice(i, 1);
+                                                                if (updated[page].length === 0) delete updated[page];
+                                                                setHighlights(updated);
+                                                                localStorage.setItem(`highlights:${filename}`, JSON.stringify(updated));
+                                                            }}
+                                                            style={{ color: "red" }}
+                                                            title="Remove highlight"
+                                                        >
+                                                            ❌ Remove
+                                                        </button>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
                             {isScrollMode ? (
                                 <div
                                     className="text-scroll-view"
-                                    style={{ padding: "1rem", lineHeight: "1.6" }}
+                                    style={{
+                                        padding: "1rem",
+                                        lineHeight: "1.6",
+                                        backgroundColor: themeStyle.backgroundColor,
+                                        background: themeStyle.background,
+                                        color: themeStyle.color,
+                                    }}
                                     onMouseUp={handleTextHighlight}
                                 >
+
                                     {textContent.map((pageText, index) => {
                                         const pageHighlights = highlights[index] || [];
                                         let displayText = pageText;
