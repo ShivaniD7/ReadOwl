@@ -6,6 +6,8 @@ import PDFReader from './components/PDFReader';
 import EPUBReader from './components/EPUBReader';
 import About from './About';
 import Contact from './Contact';
+import Reviews from './Reviews';
+import Discussions from './Discussions';
 import Layout from './Layout';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
@@ -20,6 +22,8 @@ root.render(
           <Route index element={<App />} />
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
+          <Route path="/reviews" element={<Reviews />} />
+          <Route path="/discussions" element={<Discussions />} />
         </Route>
 
         {/* These routes stay outside layout if you don't want navbar */}

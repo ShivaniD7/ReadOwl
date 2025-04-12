@@ -243,6 +243,8 @@ export default function App() {
               <Link to="/" className="nav-link">Home</Link>
               <Link to="/about" className="nav-link">About Us</Link>
               <Link to="/contact" className="nav-link">Contact Us</Link>
+              <Link to="/reviews" className="nav-link">Reviews</Link>
+              <Link to="/discussions" className="nav-link">Discussions</Link>
             </div>
             <div className="search-bar-container">
               <input

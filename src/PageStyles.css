@@ -127,3 +127,236 @@
         transform: translateY(0);
     }
 }
+
+/* Review Form Styling */
+.review-form-container {
+    background: linear-gradient(to bottom right, #ffe0f0, #e0f7ff);
+    padding: 2rem;
+    border-radius: 1.2rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    max-width: 720px;
+    margin: 2rem auto;
+    font-size: 1.1rem;
+}
+
+fieldset {
+    border: 1px solid #ccc;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    background-color: white;
+}
+
+fieldset legend {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.review-form-container label {
+    display: block;
+    margin: 1rem 0 0.5rem;
+    font-weight: 600;
+}
+
+.review-form-container input[type="text"],
+.review-form-container input[type="range"],
+.review-form-container textarea {
+    width: 100%;
+    padding: 0.6rem;
+    margin-top: 0.3rem;
+    border: 1px solid #ccc;
+    border-radius: 0.4rem;
+    font-size: 1rem;
+}
+
+.review-form-container textarea {
+    resize: vertical;
+}
+
+.review-form-container button {
+    margin-top: 1rem;
+    padding: 0.6rem 1.2rem;
+    background: #8e44ad;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.review-form-container button:hover {
+    background: #732d91;
+}
+
+/* Toggle Button Row */
+.toggle-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.toggle-buttons button {
+    padding: 0.6rem 1.2rem;
+    border: 2px solid #aaa;
+    border-radius: 0.6rem;
+    background-color: #ffffff;
+    color: #333;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.toggle-buttons button:hover {
+    background-color: #f0f0f0;
+    border-color: #999;
+}
+
+.toggle-buttons button.active {
+    background-color: #fff7d6;
+    border-color: #f59e0b;
+    color: #000;
+    box-shadow: 0 0 4px #f59e0b;
+}
+
+
+.review-form-container input[type="text"] {
+    width: 100%;
+    padding: 0.6rem;
+    margin-top: 0.3rem;
+    border: 1px solid #ccc;
+    border-radius: 0.4rem;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.star-rating {
+    margin: 0.5rem 0;
+}
+
+.star-rating .star {
+    font-size: 1.4rem;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.star-rating .star:hover {
+    transform: scale(1.2);
+}
+
+.star-rating .filled {
+    color: gold;
+}
+
+/* ======= DISCUSSIONS PAGE ONLY ======= */
+.discussions-page {
+    max-width: 800px;
+    margin: 2rem auto;
+    background: linear-gradient(135deg, #fdf6ff, #e6f7ff);
+    padding: 2rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.discussions-hero {
+    background-size: cover;
+    background-position: center;
+    padding: 6rem 1rem 4rem;
+    text-align: center;
+    border-radius: 0 0 2rem 2rem;
+}
+
+.discussions-hero-overlay {
+    background-color: rgba(0, 0, 0, 0.6);
+    display: inline-block;
+    padding: 1.5rem 2rem;
+    border-radius: 1rem;
+    color: white;
+}
+
+.discussions-hero-overlay h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.discussions-hero-overlay p {
+    font-size: 1.2rem;
+    font-style: italic;
+}
+
+.discussions-page label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.discussions-page input,
+.discussions-page textarea {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 0.75rem;
+    font-size: 1rem;
+    transition: border 0.3s ease;
+}
+
+.discussions-page input:focus,
+.discussions-page textarea:focus {
+    border-color: #7b4df7;
+    outline: none;
+}
+
+.discussions-page button {
+    background-color: #7b4df7;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.95rem;
+    border-radius: 0.6rem;
+    cursor: pointer;
+    margin-right: 0.5rem;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.discussions-page button:hover {
+    background-color: #6840d8;
+}
+
+/* Thread Cards */
+.thread-card {
+    background: white;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.thread-card h4 {
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.thread-card .replies {
+    margin-top: 1rem;
+    padding-left: 1rem;
+    border-left: 3px solid #dfd8f7;
+}
+
+.thread-card .replies>div {
+    margin-bottom: 1rem;
+    padding: 0.5rem 0.75rem;
+    background-color: #f5f5ff;
+    border-radius: 0.5rem;
+}
+
+.thread-card strong {
+    color: #4a3fc2;
+}

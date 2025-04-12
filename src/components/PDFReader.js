@@ -152,21 +152,29 @@ export default function PDFReader() {
     const handleTextHighlight = () => {
         const selection = window.getSelection();
         const selectedText = selection.toString().trim();
-
         if (!selectedText) return;
 
-        const pageIndex = currentPage - 1;
-        const confirmed = window.confirm(`Highlight: "${selectedText}"?`);
+        // Determine pageIndex from where selection occurred (only in scroll mode)
+        let pageIndex = currentPage - 1;
 
-        if (confirmed) {
-            const newHighlights = { ...highlights };
-            newHighlights[pageIndex] = [...(newHighlights[pageIndex] || []), { text: selectedText }];
-
-            setHighlights(newHighlights);
-            localStorage.setItem(`highlights:${filename}`, JSON.stringify(newHighlights));
-            selection.removeAllRanges();
+        if (isScrollMode) {
+            const anchorNode = selection.anchorNode;
+            const markParent = anchorNode?.parentElement?.closest("[data-page-index]");
+            if (markParent) {
+                pageIndex = parseInt(markParent.getAttribute("data-page-index"), 10);
+            }
         }
+
+        const confirmed = window.confirm(`Highlight: "${selectedText}"?`);
+        if (!confirmed) return;
+
+        const newHighlights = { ...highlights };
+        newHighlights[pageIndex] = [...(newHighlights[pageIndex] || []), { text: selectedText }];
+        setHighlights(newHighlights);
+        localStorage.setItem(`highlights:${filename}`, JSON.stringify(newHighlights));
+        selection.removeAllRanges();
     };
+
 
     const startListening = () => {
         if (!("webkitSpeechRecognition" in window || "SpeechRecognition" in window)) {
@@ -590,6 +598,7 @@ export default function PDFReader() {
                                         return (
                                             <div
                                                 key={index}
+                                                data-page-index={index}
                                                 style={{ marginBottom: "2rem" }}
                                                 onClick={(e) => {
                                                     const mark = e.target.closest("mark.highlight");
