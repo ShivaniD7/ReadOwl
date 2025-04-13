@@ -55,6 +55,13 @@ export default function App() {
   }, []);
 
   const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+  const categorizeProgress = (file) => {
+    const raw = localStorage.getItem(`progress:${file}`);
+    if (!raw) return "unread";
+    const { percent } = JSON.parse(raw);
+    return percent >= 98 ? "finished" : "inProgress";
+  };
+
 
   const detectGenreFromName = (name) => {
     const lower = name.toLowerCase();
@@ -80,7 +87,8 @@ export default function App() {
   } else if (sortOrder === "desc") {
     filteredBooks = filteredBooks.sort((a, b) => b.name.localeCompare(a.name));
   }
-
+  const inProgressBooks = books.filter(book => categorizeProgress(book.file) === "inProgress");
+  const finishedBooks = books.filter(book => categorizeProgress(book.file) === "finished");
   const openReaderTab = (book) => {
     const url = `${window.location.origin}/${book.type}/${encodeURIComponent(book.file)}`;
     window.open(url, "_blank");
@@ -232,6 +240,24 @@ export default function App() {
 
   // Recommended books (randomly picked)
   const recommended = books.filter((_, idx) => idx % 5 === 0).slice(0, 5);
+  const genreCounts = {};
+  finishedBooks.forEach(book => {
+    const genre = detectGenreFromName(book.name || "");
+    if (genre) {
+      genreCounts[genre] = (genreCounts[genre] || 0) + 1;
+    }
+  });
+
+  const topGenres = Object.entries(genreCounts)
+    .sort(([, a], [, b]) => b - a)
+    .slice(0, 2)
+    .map(([genre]) => genre);
+
+  const smartRecommended = books.filter(book => {
+    const genre = detectGenreFromName(book.name || "");
+    return topGenres.includes(genre) && categorizeProgress(book.file) === "unread";
+  }).slice(0, 5);
+
 
   return (
     <>
@@ -316,6 +342,41 @@ export default function App() {
           )}
         </div>
       </section>
+      {/* Continue Reading Section */}
+      <section className="in-progress-section">
+        <h2 className="section-title">📖 Continue Reading</h2>
+        <div className="latest-grid">
+          {inProgressBooks.length > 0 ? (
+            inProgressBooks.map(book => (
+              <div key={book.file} className="latest-card" onClick={() => openReaderTab(book)}>
+                <img src={`https://picsum.photos/seed/${encodeURIComponent(book.name || "progress")}/160/230`} alt={book.name} />
+                <h4>{book.name}</h4>
+                <p className="latest-description">Continue from where you left off</p>
+              </div>
+            ))
+          ) : (
+            <p>No books in progress.</p>
+          )}
+        </div>
+      </section>
+
+      {/* Finished Books Section */}
+      <section className="finished-section">
+        <h2 className="section-title">✅ Finished Books</h2>
+        <div className="latest-grid">
+          {finishedBooks.length > 0 ? (
+            finishedBooks.map(book => (
+              <div key={book.file} className="latest-card" onClick={() => openReaderTab(book)}>
+                <img src={`https://picsum.photos/seed/${encodeURIComponent(book.name || "finished")}/160/230`} alt={book.name} />
+                <h4>{book.name}</h4>
+                <p className="latest-description">Completed</p>
+              </div>
+            ))
+          ) : (
+            <p>No finished books yet.</p>
+          )}
+        </div>
+      </section>
 
 
       {/* Main Content: Books + Sidebar */}
@@ -379,7 +440,7 @@ export default function App() {
         {/* Recommended Sidebar */}
         <aside className="sidebar">
           <h3 className="sidebar-title">✨ Recommended for You</h3>
-          {recommended.map((book, index) => {
+          {(smartRecommended.length > 0 ? smartRecommended : recommended).map((book, index) => {
             const randomDescription = placeholderDescriptions[index % placeholderDescriptions.length];
 
             return (
@@ -400,7 +461,6 @@ export default function App() {
             );
           })}
         </aside>
-
       </div>
     </>
   );

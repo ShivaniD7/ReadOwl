@@ -365,12 +365,18 @@ export default function EPUBReader() {
                         }, 200);
                     }
                     try {
-                        const percentage = book.locations.percentageFromCfi(location.start.cfi);
-                        setProgress(Math.floor(percentage * 100));
+                        const percent = Math.floor(book.locations.percentageFromCfi(location.start.cfi) * 100);
+                        setProgress(percent);
                         localStorage.setItem(`bookmark:${filename}`, location.start.cfi);
+                        localStorage.setItem(`progress:${filename}`, JSON.stringify({
+                            type: "epub",
+                            value: location.start.cfi,
+                            percent
+                        }));
                     } catch {
                         setProgress(0);
                     }
+
                     if (autoRead) {
                         const iframe = viewerRef.current?.querySelector("iframe");
                         const doc = iframe?.contentDocument || iframe?.contentWindow?.document;

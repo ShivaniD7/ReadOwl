@@ -221,10 +221,16 @@ export default function PDFReader() {
 
     useEffect(() => {
         if (numPages) {
-            const percentage = Math.floor((currentPage / numPages) * 100);
-            setProgress(percentage);
+            const percent = Math.floor((currentPage / numPages) * 100);
+            setProgress(percent);
+            localStorage.setItem(`progress:${filename}`, JSON.stringify({
+                type: "pdf",
+                value: currentPage,
+                percent
+            }));
         }
     }, [currentPage, numPages]);
+
 
     const toggleFavorite = () => {
         const saved = JSON.parse(localStorage.getItem("favorites") || "[]");
